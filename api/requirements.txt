@@ -1,4 +1,3 @@
-flask-restful
 python-dotenv
 gspread
 flask-cors

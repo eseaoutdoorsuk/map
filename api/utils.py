@@ -46,28 +46,25 @@ def get_users_from_records(records, locations, auth_level=AUTH_LEVEL.PUBLIC):
 
 def redact_phone(phone, auth_level=AUTH_LEVEL.PUBLIC):
     phone = str(phone).strip()
-    match auth_level:
-        case AUTH_LEVEL.PUBLIC | AUTH_LEVEL.DENIED:
-            return ""
-        case AUTH_LEVEL.MEMBERS:
-            return "********" + phone[-3:]
-        case AUTH_LEVEL.DEV:
-            return phone
-        case _:
-            raise ValueError("auth_level invalid")
-    return 
+    if auth_level in (AUTH_LEVEL.PUBLIC, AUTH_LEVEL.DENIED):
+        return ""
+    elif auth_level == AUTH_LEVEL.MEMBERS:
+        return "********" + phone[-3:]
+    elif auth_level == AUTH_LEVEL.DEV:
+        return phone
+    else:
+        raise ValueError("auth_level invalid")
 
 def split_location_text(location_text):
     return [location.lower() for location in location_text.split("/")]
 
 def redact_name(name, auth_level=AUTH_LEVEL.PUBLIC):
     name = str(name).strip()
-    match auth_level:
-        case AUTH_LEVEL.PUBLIC | AUTH_LEVEL.DENIED:
-            return f"{name[:1]}."
-        case AUTH_LEVEL.MEMBERS:
-            return name.split(" ")[0]
-        case AUTH_LEVEL.DEV:
-            return name
-        case _:
-            raise ValueError("auth_level invalid")
+    if auth_level in (AUTH_LEVEL.PUBLIC, AUTH_LEVEL.DENIED):
+        return f"{name[:1]}."
+    elif auth_level == AUTH_LEVEL.MEMBERS:
+        return name.split(" ")[0]
+    elif auth_level == AUTH_LEVEL.DEV:
+        return name
+    else:
+        raise ValueError("auth_level invalid")
