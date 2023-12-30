@@ -20,8 +20,9 @@ function buildPopup(name, location, phone, auth_level) {
 }
 
 async function getUsers(password) {
+    const URL = "https://eseaoutdoorsuk-map.vercel.app"; //http://127.0.0.1:5000
     try {
-        const response = await fetch(`http://127.0.0.1:5000/getUsers?password=${password}`);
+        const response = await fetch(`${URL}/getUsers?password=${password}`);
         const data = await response.json();
         let markers = L.markerClusterGroup({
             showCoverageOnHover: false,

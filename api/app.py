@@ -15,7 +15,6 @@ locations = read_spreadsheet(spreadsheet, sheet="locations")
 @app.route('/getUsers', methods=['GET'])
 def get_users():
     password = request.args.get('password')
-
     if password == os.getenv("PASSWORD"):
         auth_level = AUTH_LEVEL.MEMBERS
     elif password == os.getenv("DEV_PASSWORD"):
