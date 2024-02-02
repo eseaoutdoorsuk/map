@@ -29,17 +29,23 @@ def get_users():
             "auth_level": auth_level.name,
             "users": get_users_from_records(records, locations, auth_level=auth_level)
             }
-        return jsonify(users)
+        return jsonify(users), 200, {
+            "Cache-Control": "s-maxage=604800, stale-while-revalidate=86400"
+        }
     except Exception as e:
-        return {"error": f"Unknown error: {str(e)}"}, 500
+        return jsonify({"error": f"Unknown error: {str(e)}"}), 500
 
 @app.route('/updateLocationDatabase', methods=['GET'])
 def update_location():
     try:
         status = update_location_database()
-        return jsonify({'message': status})
+        return jsonify()
     except Exception as e:
-        return {"error": f"Unknown error: {str(e)}"}, 500
+        return jsonify({"error": f"Unknown error: {str(e)}"}), 500
+
+@app.route('/', methods=['GET'])
+def hello():
+    return jsonify()
 
 if __name__ == '__main__':
     app.run(debug=True)

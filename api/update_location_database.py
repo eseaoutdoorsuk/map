@@ -15,7 +15,7 @@ def update_location_database():
     print("EXISTING LOCAITONS")
     print([loc["location"] for loc in locations])
 
-    user_locations = set(sum([split_location_text(record["temp1"]) for record in records], []))
+    user_locations = set(sum([split_location_text(record["location_clean"]) for record in records], []))
 
     new_locations = []
     for location in user_locations:
