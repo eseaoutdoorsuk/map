@@ -34,14 +34,14 @@ def get_users_from_records(records, locations, auth_level=AUTH_LEVEL.PUBLIC):
     })
     return [
         {
-            "name": redact_name(record["Name"], auth_level=auth_level, filter1=record["map1"], filter2=record["map2"]),
+            "name": redact_name(record["Name"], auth_level=auth_level, filter1=int(record["map1"]), filter2=int(record["map2"])),
             "locations": [{
                 "name": location.title(),
                 "coords": location_dict[location]
                 } for location in split_location_text(record["location_clean"])],
-            "phone": redact_phone(record["number_clean"], auth_level=auth_level, filter1=record["map1"], filter2=record["map2"]),
+            "phone": redact_phone(record["number_clean"], auth_level=auth_level, filter1=int(record["map1"]), filter2=int(record["map2"])),
         } 
-        for record in records if record["wa"] is True
+        for record in records if record["wa"] == "TRUE" #and int(record["map1"]) != -1 and int(record["map2"])) != -1
     ]
 
 def redact_phone(phone, auth_level=AUTH_LEVEL.PUBLIC, filter1=0, filter2=0):
