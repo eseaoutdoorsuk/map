@@ -27,6 +27,7 @@ async function getUsers(password) {
         if (response) {
             document.getElementById('spinner').style.display = 'none'
             document.getElementById('overlay').style.display = 'none'
+            document.getElementById('overlay').style.zIndex = 1
         }
         const data = await response.json();
         let markers = L.markerClusterGroup({
