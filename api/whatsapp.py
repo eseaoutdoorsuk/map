@@ -3,7 +3,7 @@ import pyautogui
 from utils import *
 
 ###
-### Run with python whatsapp.py
+### Run with python api/whatsapp.py
 ### Close WhatsApp beforehand
 ### 
 
