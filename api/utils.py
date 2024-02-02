@@ -32,6 +32,7 @@ def get_users_from_records(records, locations, auth_level=AUTH_LEVEL.PUBLIC):
     location_dict = defaultdict(lambda: DEFAULT_LOCATION, {
         loc["location"]: loc["latlon"] for loc in locations
     })
+    print(records)
     return [
         {
             "name": redact_name(record["Name"], auth_level=auth_level, filter1=int(record["map1"]), filter2=int(record["map2"])),

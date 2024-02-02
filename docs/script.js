@@ -14,15 +14,19 @@ let passwordModal = new bootstrap.Modal(document.getElementById('passwordModal')
 function buildPopup(name, location, phone, auth_level) {
     let name_text = `<b>${name}</b>`;
     let location_text = `<br>Location: ${location}`
-    let phone_text = (phone == "") ? "" : `<br>Phone: ${phone}<br>In WhatsApp group`;
+    let phone_text = (phone == "") ? "" : `<br>Phone: ${phone}`;
     let show_more_text = (auth_level === "PUBLIC" || auth_level === "DENIED") ? '<br><button onclick="displayAuth()">Show more...</button>' : '';
-    return `${name_text}${location_text}${phone_text}${show_more_text}`
+    return `${name_text}${location_text}${phone_text}<br>In WhatsApp group${show_more_text}`
 }
 
 async function getUsers(password) {
-    const URL = "https://eseaoutdoorsuk-map.vercel.app"; //http://127.0.0.1:5000
+    const URL = "http://127.0.0.1:5000"//"https://eseaoutdoorsuk-map.vercel.app"; //
     try {
+        document.getElementById('spinner').style.display = 'block'
         const response = await fetch(`${URL}/getUsers?password=${password}`);
+        if (response) {
+            document.getElementById('spinner').style.display = 'none'
+        }
         const data = await response.json();
         let markers = L.markerClusterGroup({
             showCoverageOnHover: false,

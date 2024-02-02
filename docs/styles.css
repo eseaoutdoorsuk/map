@@ -14,3 +14,19 @@ width: 100%;
     max-width: 40px;
     height: auto;
 }
+
+.overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    top: 50%;
+    left: 0px;
+ }
+
+.spinner {
+    position: fixed;
+    z-index: 1031; /* High z-index so it is on top of the page */
+    top: 50%;
+    right: 50%;
+  }
