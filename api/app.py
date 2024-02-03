@@ -30,7 +30,7 @@ def get_users():
             "users": get_users_from_records(records, locations, auth_level=auth_level)
             }
         return jsonify(users), 200, {
-            "Cache-Control": "s-maxage=604800, stale-while-revalidate=86400"
+            "Cache-Control": "s-maxage=10, stale-while-revalidate=10"#"s-maxage=604800, stale-while-revalidate=86400"
         }
     except Exception as e:
         return jsonify({"error": f"Unknown error: {str(e)}"}), 500
