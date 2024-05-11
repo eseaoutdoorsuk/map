@@ -9,7 +9,7 @@ from utils import *
 
 def update_whatsapp_numbers():
     spreadsheet = get_spreadsheet()
-    records = read_spreadsheet(spreadsheet, sheet="Form responses 2")
+    records = read_spreadsheet(spreadsheet, sheet=os.getenv("RECORDS_SHEET"))
     wa_sheet = read_spreadsheet(spreadsheet, sheet="whatsapp")
 
     checked_numbers = [str(row["number"]) for row in wa_sheet]

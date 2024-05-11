@@ -35,14 +35,14 @@ def get_users_from_records(records, locations, auth_level=AUTH_LEVEL.PUBLIC):
     print(records)
     return [
         {
-            "name": redact_name(record["Name"], auth_level=auth_level, filter1=int(record["map1"]), filter2=int(record["map2"])),
+            "name": redact_name(record["firstName"], record["lastName"], auth_level=auth_level, filter1=0, filter2=3),#filter1=int(record["map1"]), filter2=int(record["map2"])),
             "locations": [{
                 "name": location.title(),
                 "coords": location_dict[location]
                 } for location in split_location_text(record["location_clean"])],
-            "phone": redact_phone(record["number_clean"], auth_level=auth_level, filter1=int(record["map1"]), filter2=int(record["map2"])),
+            #"phone": redact_phone(record["number_clean"], auth_level=auth_level, filter1=0, filter2=3),#filter1=int(record["map1"]), filter2=int(record["map2"])),
         } 
-        for record in records if record["wa"] == "TRUE" #and int(record["map1"]) != -1 and int(record["map2"])) != -1
+        for record in records #if record["wa"] == "TRUE" #and int(record["map1"]) != -1 and int(record["map2"])) != -1
     ]
 
 def redact_phone(phone, auth_level=AUTH_LEVEL.PUBLIC, filter1=0, filter2=0):
@@ -62,8 +62,12 @@ def redact_phone(phone, auth_level=AUTH_LEVEL.PUBLIC, filter1=0, filter2=0):
 def split_location_text(location_text):
     return [location.lower() for location in location_text.split("/")]
 
-def redact_name(name, auth_level=AUTH_LEVEL.PUBLIC, filter1=0, filter2=0):
-    name = str(name).strip()
+def redact_name(first_name, last_name, auth_level=AUTH_LEVEL.PUBLIC, filter1=0, filter2=0):
+    
+    first_name = str(first_name).strip()
+    last_name = str(last_name).strip()
+    name = f"{first_name} {last_name}"
+
     first_letter = f"{name[:1]}.".upper()
     if auth_level in (AUTH_LEVEL.PUBLIC, AUTH_LEVEL.DENIED):
         if filter1 == 1:

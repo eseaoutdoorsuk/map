@@ -9,7 +9,7 @@ app = Flask(__name__)
 CORS(app)
 
 spreadsheet = get_spreadsheet()
-records = read_spreadsheet(spreadsheet, sheet="Form responses 2")
+records = read_spreadsheet(spreadsheet, sheet=os.getenv("RECORDS_SHEET"))
 locations = read_spreadsheet(spreadsheet, sheet="locations")
 
 @app.route('/getUsers', methods=['GET'])
@@ -30,6 +30,7 @@ def get_users():
             "users": get_users_from_records(records, locations, auth_level=auth_level)
             }
         return jsonify(users), 200, {
+            # Longer cache for deployment, shorter cache for debug
             "Cache-Control": "s-maxage=10, stale-while-revalidate=10"#"s-maxage=604800, stale-while-revalidate=86400"
         }
     except Exception as e:

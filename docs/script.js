@@ -10,13 +10,14 @@ L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_toner_lite/{z}/{x}/{y}{r}
 }).addTo(map);
 
 let passwordModal = new bootstrap.Modal(document.getElementById('passwordModal'));
+let welcomeModal = new bootstrap.Modal(document.getElementById('welcomeModal'));
 
 function buildPopup(name, location, phone, auth_level) {
     let name_text = `<b>${name}</b>`;
     let location_text = `<br>Location: ${location}`
     let phone_text = (phone == "") ? "" : `<br>Phone: ${phone}`;
     let show_more_text = (auth_level === "PUBLIC" || auth_level === "DENIED") ? '<br><button onclick="displayAuth()">Show more...</button>' : '';
-    return `${name_text}${location_text}${phone_text}<br>In WhatsApp group${show_more_text}`
+    return `${name_text}${location_text}${phone_text}<br>In Heylo community${show_more_text}`
 }
 
 async function getUsers(password) {
@@ -63,6 +64,7 @@ function displayAuth() {
 
 function onStartup() {
     passwordModal.hide();
+    welcomeModal.show();
     getUsers("");
 }
 

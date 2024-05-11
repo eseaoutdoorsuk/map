@@ -35,6 +35,7 @@ nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 -->
             <ul class="nav col-auto me-auto mb-0 justify-content-start">
                 <li><a href="https://instagram.com/eseaoutdoorsuk" class="nav-link px-2 text-black fw-bold" target="_blank">ESEA Outdoors UK</a></li>
                 <li><a href="https://eseaoutdoorsuk.carrd.co/" class="nav-link px-2 text-black" target="_blank">About</a></li>
+                <li><a href="https://eseaoutdoorsuk.github.io/guidelines/" class="nav-link px-2 text-black" target="_blank">Guidelines</a></li>
             </ul>
             
             <div class="text-end">
@@ -52,7 +53,7 @@ nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 -->
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="passwordModalLabel">Enter Password</h5>
+                <h5 class="modal-title" id="passwordModalLabel">🔑 Admin login</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -60,14 +61,33 @@ nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 -->
             <div class="modal-body">
                 <form>
                     <div class="form-group">
-                        <label for="passwordInput">Password:</label>
-                        <input type="password" class="form-control" id="passwordInput" placeholder="Enter password">
+                        <label for="passwordInput">Hidden information is accessible only to admins.</label>
+                        <input type="password" class="form-control" id="passwordInput" placeholder="Enter admin password">
                     </div>
                     <div class="mb-3 text-danger" id="errorLabel" style="display:none;">Incorrect password. Please try again.</div>
                     <div class="d-grid">
                         <button type="button" class="btn btn-primary" onclick="onLogin()">Login</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="welcomeModal" tabindex="-1" role="dialog" aria-labelledby="welcomeModalLabel" aria-hidden="true" style="display:none">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="welcomeModalLabel">🗺️ Welcome</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Welcome to the ESEA Outdoors UK map! All community members who specified their location at signup appear <strong>anonymously</strong> on this map. Use this map to see where our community is around the UK!
+
+                If you want to connect with someone in your local area or elsewhere, please ask an admin to request to connect you. Note there is no obligation for the other person to agree to be connected.
             </div>
         </div>
     </div>
