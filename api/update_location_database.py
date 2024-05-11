@@ -1,4 +1,5 @@
 from utils import *
+import os
 from geopy.geocoders import Nominatim
 
 def get_location(location) -> str:
@@ -30,5 +31,5 @@ def update_location_database(location_colname="location_clean"):
 
 if __name__ == "__main__":
     update_location_database(
-        location_colname="Location (optional, to be added anonymously to the ESEA map)"
+        location_colname=os.getenv("LOCATION_PROMPT")
     )

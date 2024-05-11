@@ -39,7 +39,7 @@ def get_users_from_records(records, locations, auth_level=AUTH_LEVEL.PUBLIC):
             "locations": [{
                 "name": location.title(),
                 "coords": location_dict[location]
-                } for location in split_location_text(record["location_clean"])],
+                } for location in split_location_text(record[os.getenv("LOCATION_PROMPT")])],
             #"phone": redact_phone(record["number_clean"], auth_level=auth_level, filter1=0, filter2=3),#filter1=int(record["map1"]), filter2=int(record["map2"])),
         } 
         for record in records #if record["wa"] == "TRUE" #and int(record["map1"]) != -1 and int(record["map2"])) != -1
