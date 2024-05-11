@@ -2,3 +2,4 @@ python-dotenv
 gspread
 flask-cors
 geopy
+black

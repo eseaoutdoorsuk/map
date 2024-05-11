@@ -8,6 +8,8 @@
 ## Backend
 - Google sheets access from Python following this [tutorial](https://www.datacamp.com/tutorial/how-to-analyze-data-in-google-sheets-with-python-a-step-by-step-guide)
 - Google JSON env downloaded from Google Cloud Console then the string `f"'{json.dumps({...})}'"` added to .env variable `GOOGLE_JSON`
+- Get started: `pip install -r api/requirements.txt`
 - Run backend locally: `python api/app.py`
 - Update locations: `python api/update_location_database.py`
 - Backend is deployed to [Vercel](https://eseaoutdoorsuk-map.vercel.app/)
+- Black: `black api`
