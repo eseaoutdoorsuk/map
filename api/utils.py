@@ -19,7 +19,8 @@ def get_spreadsheet():
     return client.open_by_url(os.getenv("GOOGLE_SPREADSHEET"))
 
 def read_spreadsheet(spreadsheet: gspread.Spreadsheet, sheet="Sheet1"):
-    return spreadsheet.worksheet(sheet).get_all_records()
+    records = spreadsheet.worksheet(sheet).get_all_records()
+    return records
 
 def write_spreadsheet(rows, spreadsheet: gspread.Spreadsheet, sheet="Sheet1"):
     if len(rows) > 0:
@@ -40,13 +41,15 @@ def get_users_from_records(records, locations, auth_level=AUTH_LEVEL.PUBLIC):
                 "name": location.title(),
                 "coords": location_dict[location]
                 } for location in split_location_text(record[os.getenv("LOCATION_PROMPT")])],
-            #"phone": redact_phone(record["number_clean"], auth_level=auth_level, filter1=0, filter2=3),#filter1=int(record["map1"]), filter2=int(record["map2"])),
-        } 
+            "phone": redact_phone(record.get("number_clean", ""), auth_level=auth_level, filter1=0, filter2=3),#filter1=int(record["map1"]), filter2=int(record["map2"])),
+        }
         for record in records #if record["wa"] == "TRUE" #and int(record["map1"]) != -1 and int(record["map2"])) != -1
     ]
 
 def redact_phone(phone, auth_level=AUTH_LEVEL.PUBLIC, filter1=0, filter2=0):
     phone = str(phone).strip()
+    if phone == "" or phone is None:
+        return ""
     if auth_level in (AUTH_LEVEL.PUBLIC, AUTH_LEVEL.DENIED):
         return ""
     elif auth_level == AUTH_LEVEL.MEMBERS:
