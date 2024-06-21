@@ -42,6 +42,7 @@ async function getUsers(password) {
         });
         data.users.forEach(user => {
             user.locations.forEach(location => {
+                console.log(user, location.coords)
                 let [lat, lon] = location.coords.split(',');
                 markers.addLayer(
                     L.marker([lat, lon]).bindPopup(buildPopup(user.name, location.name, user.phone, data.auth_level))//.addTo(map);

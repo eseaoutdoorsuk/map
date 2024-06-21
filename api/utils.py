@@ -1,4 +1,4 @@
-import os, json
+import os, json, re
 from collections import defaultdict
 from enum import Enum
 from typing import List, Dict
@@ -114,11 +114,19 @@ def split_location_text(location_text: str, sep: str = "/") -> List[str]:
     """
 
     def clean(loc: str) -> str:
+        loc = re.sub(r'\(.*?\)', '', loc) # remove brackets and text inside
         loc = loc.strip().lower()
         loc = "" if loc in ["no", "none"] else loc
         return loc
 
-    return [clean(location) for location in location_text.split(sep)]
+    # Replace "and" with sep
+    location_text_clean = re.sub(r'\band\b', sep, location_text, flags=re.IGNORECASE)
+
+    locations = [clean(location) for location in location_text_clean.replace(";", sep).split(sep)]
+
+    if "Sheffield" in location_text:
+        print(locations)
+    return [location for location in locations if location]
 
 
 def redact_phone(

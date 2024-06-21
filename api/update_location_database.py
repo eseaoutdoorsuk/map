@@ -42,7 +42,9 @@ def update_location_database(location_colname: str = "location_clean") -> str:
             print("NEW LOCATION:", location)
             coords = get_location(location)
             locations += [{"location": location, "latlon": coords}]
-            new_locations += [location, coords]
+            new_locations += [[location, coords]]
+
+    print(new_locations)
 
     return write_spreadsheet(new_locations, spreadsheet, "locations")
 
