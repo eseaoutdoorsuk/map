@@ -31,3 +31,8 @@ z-index: 100;
     top: 50%;
     right: 50%;
   }
+
+.nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0; /* Adjust this if you see a gap */
+}
