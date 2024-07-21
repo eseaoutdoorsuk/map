@@ -51,7 +51,7 @@ def update_location():
     Run update location database script to fetch new locations and write to Google Sheets.
     """
     try:
-        status = update_location_database()
+        status = update_location_database(location_colname=os.getenv("LOCATION_PROMPT"))
         return jsonify()
     except Exception as e:
         return jsonify({"error": f"Unknown error: {str(e)}"}), 500
