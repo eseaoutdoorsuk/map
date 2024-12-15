@@ -76,7 +76,7 @@ let goldIcon = new L.Icon({
   });
 
 async function getUsers(password) {
-    const URL = "http://127.0.0.1:5000"//"https://eseaoutdoorsuk-map.vercel.app" //
+    const URL = "https://eseaoutdoorsuk-map.vercel.app" //"http://127.0.0.1:5000"//
     try {
         document.getElementById('spinner').style.display = 'block'
         const response = await fetch(`${URL}/getUsers?password=${password}`);
