@@ -40,3 +40,49 @@ z-index: 100;
 .custom-header-bg {
     background-color: #EDE7D9 !important;
 }
+
+.legend {
+    background: white;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.legend label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.legend input {
+    margin-right: 5px;
+}
+
+.legend i {
+    display: inline-block;
+    width: 25px;
+    height: 41px;
+    background-size: contain;
+    margin-right: 10px;
+}
+.legend i {
+  display: inline-block;
+  width: 25px;
+  height: 41px;
+  margin-right: 10px;
+}
+
+.legend .icon-users {
+    background: url('https://unpkg.com/leaflet/dist/images/marker-icon.png') no-repeat center center;
+    background-size: contain;
+
+  }
+  .legend .icon-trips {
+    background: url('https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png') no-repeat center center; /* Example other icon */
+    background-size: contain;
+
+  }

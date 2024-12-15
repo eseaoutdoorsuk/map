@@ -77,7 +77,7 @@ def get_users_from_records(
         lambda: DEFAULT_LOCATION, {loc["location"]: loc["latlon"] for loc in locations}
     )
 
-    print(records)
+    #print(records)
 
     return [
         {
@@ -120,7 +120,7 @@ def get_trips_from_records(
         lambda: DEFAULT_LOCATION, {loc["location"]: loc["latlon"] for loc in locations}
     )
 
-    print(records)
+    #print(records)
 
     return [
         {
@@ -128,13 +128,20 @@ def get_trips_from_records(
             "details": record.get("details", ""),
             "locations": [
                 {"name": location.title(), "coords": location_dict[location]}
-                for location in [record[os.getenv("LOCATION_PROMPT")]]
+                for location in [
+                    clean_location_text(record[os.getenv("LOCATION_PROMPT")])
+                ]
             ],
             "date": str(record.get("date", "")),
         }
         for record in records
     ]
 
+def clean_location_text(loc: str) -> str:
+    loc = re.sub(r'\(.*?\)', '', loc) # remove brackets and text inside
+    loc = loc.strip().lower()
+    loc = "" if loc in ["no", "none"] else loc
+    return loc
 
 def split_location_text(location_text: str, sep: str = "/") -> List[str]:
     """Split and clean location text into list of clean locations to be matched and/or geocoded.
@@ -143,17 +150,10 @@ def split_location_text(location_text: str, sep: str = "/") -> List[str]:
     :param str sep: separator, defaults to "/"
     :return List[str]: list of clean locations
     """
-
-    def clean(loc: str) -> str:
-        loc = re.sub(r'\(.*?\)', '', loc) # remove brackets and text inside
-        loc = loc.strip().lower()
-        loc = "" if loc in ["no", "none"] else loc
-        return loc
-
     # Replace "and" with sep
     location_text_clean = re.sub(r'\band\b', sep, location_text, flags=re.IGNORECASE)
 
-    locations = [clean(location) for location in location_text_clean.replace(";", sep).split(sep)]
+    locations = [clean_location_text(location) for location in location_text_clean.replace(";", sep).split(sep)]
 
     if "Sheffield" in location_text:
         print(locations)

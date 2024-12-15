@@ -54,7 +54,7 @@ def update_location():
     """
     try:
         status = update_location_database(location_colname=os.getenv("LOCATION_PROMPT"))
-        return jsonify()
+        return jsonify({"status": status})
     except Exception as e:
         return jsonify({"error": f"Unknown error: {str(e)}"}), 500
 

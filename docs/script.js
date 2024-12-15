@@ -1,7 +1,7 @@
 let map = L.map( 'map', {
     center: [53.4794892,-2.2451148],
     minZoom: 5,
-    maxZoom: 8,
+    maxZoom: 12,
     zoom: 6
 });
 
@@ -12,15 +12,40 @@ L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_toner_lite/{z}/{x}/{y}{r}
 // Legend
 let legend = L.control({ position: 'topright' });
 
-legend.onAdd = function (map) {
-  let div = L.DomUtil.create('div', 'legend');
-  div.innerHTML += '<i style="background: black"></i> Public Right of Way<br>';
-  div.innerHTML += '<i style="background: magenta"></i> Active non-PRoW<br>';
-  div.innerHTML += '<i style="background: red"></i> Highly active non-PRoW<br>';
-  return div;
-};
+legend.onAdd = function () {
+    const div = L.DomUtil.create('div', 'legend');
 
+    div.innerHTML = `
+      <label>
+        <input type="checkbox" id="toggle-users" checked />
+        <i class="icon-users"></i> Show members
+        <input type="checkbox" id="toggle-trips" checked />
+        <i class="icon-trips"></i> Show meetups
+      </label>
+    `;
+    L.DomEvent.disableClickPropagation(div);
+    return div;
+};
 legend.addTo(map);
+
+let markers = L.markerClusterGroup({
+    showCoverageOnHover: false,
+    maxClusterRadius: 20,
+});
+let markers2 = L.markerClusterGroup({
+    showCoverageOnHover: false,
+    maxClusterRadius: 5,
+});
+
+document.getElementById('toggle-users').addEventListener('change', function (e) {
+    if (e.target.checked) {map.addLayer(markers);
+    } else {map.removeLayer(markers);}
+});
+
+document.getElementById('toggle-trips').addEventListener('change', function (e) {
+    if (e.target.checked) {map.addLayer(markers2);
+    } else {map.removeLayer(markers2);}
+});
 
 let passwordModal = new bootstrap.Modal(document.getElementById('passwordModal'));
 let welcomeModal = new bootstrap.Modal(document.getElementById('welcomeModal'));
@@ -41,8 +66,17 @@ function buildTripPopup(name, details, location, date, auth_level) {
     return `${name_text}${detail_text}${location_text}${date_text}`
 }
 
+let goldIcon = new L.Icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
+
 async function getUsers(password) {
-    const URL = "https://eseaoutdoorsuk-map.vercel.app" //"http://127.0.0.1:5000"//
+    const URL = "http://127.0.0.1:5000"//"https://eseaoutdoorsuk-map.vercel.app" //
     try {
         document.getElementById('spinner').style.display = 'block'
         const response = await fetch(`${URL}/getUsers?password=${password}`);
@@ -57,13 +91,8 @@ async function getUsers(password) {
             document.getElementById('overlay').style.zIndex = 1
         }
         const data = await response.json();
-        let markers = L.markerClusterGroup({
-            showCoverageOnHover: false,
-            maxClusterRadius: 20,
-        });
         data.users.forEach(user => {
             user.locations.forEach(location => {
-                console.log(user, location.coords)
                 let [lat, lon] = location.coords.split(',');
                 markers.addLayer(
                     L.marker([lat, lon]).bindPopup(buildUserPopup(user.name, location.name, user.phone, data.auth_level))
@@ -72,14 +101,14 @@ async function getUsers(password) {
         });
         data.trips.forEach(trip => {
             trip.locations.forEach(location => {
-                console.log(trip, location.coords)
                 let [lat, lon] = location.coords.split(',');
-                let marker = L.marker([lat, lon]).bindPopup(buildTripPopup(trip.name, trip.details, location.name, trip.date, data.auth_level))
-                marker._icon.style.filter = "hue-rotate(120deg)"
-                markers.addLayer(marker);
+                let marker = L.marker([lat, lon], {icon: goldIcon}).bindPopup(buildTripPopup(trip.name, trip.details, location.name, trip.date, data.auth_level))
+                markers2.addLayer(marker);
             })
         });        
         map.addLayer(markers);
+        map.addLayer(markers2);
+
         return data.auth_level;
     } catch (error) {
         console.error('Error:', error);
