@@ -25,7 +25,8 @@ def update_location_database(location_colname: str = "location_clean") -> str:
     :return str: spreadsheet write status message.
     """
     spreadsheet = get_spreadsheet()
-    records = read_spreadsheet(spreadsheet, sheet=os.getenv("RECORDS_SHEET"))
+    records = read_spreadsheet(spreadsheet, sheet=os.getenv("RECORDS_SHEET")) \
+        + read_spreadsheet(spreadsheet, sheet=os.getenv("TRIPS_SHEET"))
     locations = read_spreadsheet(spreadsheet, sheet="locations")
 
     print("EXISTING LOCATIONS", [loc["location"] for loc in locations])

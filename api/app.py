@@ -10,6 +10,7 @@ CORS(app)
 
 spreadsheet = get_spreadsheet()
 records = read_spreadsheet(spreadsheet, sheet=os.getenv("RECORDS_SHEET"))
+trips = read_spreadsheet(spreadsheet, sheet=os.getenv("TRIPS_SHEET"))
 locations = read_spreadsheet(spreadsheet, sheet="locations")
 
 
@@ -32,6 +33,7 @@ def get_users():
         users = {
             "auth_level": auth_level.name,
             "users": get_users_from_records(records, locations, auth_level=auth_level),
+            "trips": get_trips_from_records(trips, locations, auth_level=auth_level)
         }
         return (
             jsonify(users),

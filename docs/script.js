@@ -9,15 +9,36 @@ L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_toner_lite/{z}/{x}/{y}{r}
     attribution: '&copy; <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://www.stamen.com/" target="_blank">Stamen Design</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright/" target="_blank">OpenStreetMap</a>',
 }).addTo(map);
 
+// Legend
+let legend = L.control({ position: 'topright' });
+
+legend.onAdd = function (map) {
+  let div = L.DomUtil.create('div', 'legend');
+  div.innerHTML += '<i style="background: black"></i> Public Right of Way<br>';
+  div.innerHTML += '<i style="background: magenta"></i> Active non-PRoW<br>';
+  div.innerHTML += '<i style="background: red"></i> Highly active non-PRoW<br>';
+  return div;
+};
+
+legend.addTo(map);
+
 let passwordModal = new bootstrap.Modal(document.getElementById('passwordModal'));
 let welcomeModal = new bootstrap.Modal(document.getElementById('welcomeModal'));
 
-function buildPopup(name, location, phone, auth_level) {
+function buildUserPopup(name, location, phone, auth_level) {
     let name_text = `<b>${name}</b>`;
-    let location_text = `<br>Location: ${location}`
-    let phone_text = (phone == "") ? "" : `<br>Phone: ${phone}`;
+    let location_text = `<br>📍 ${location}`
+    let phone_text = (phone == "") ? "" : `<br>📞 ${phone}`;
     let show_more_text = (auth_level === "PUBLIC" || auth_level === "DENIED") ? '<br><button onclick="displayAuth()">Show more...</button>' : '';
     return `${name_text}${location_text}${phone_text}<br>In Heylo community${show_more_text}`
+}
+
+function buildTripPopup(name, details, location, date, auth_level) {
+    let name_text = `<b>${name}</b>`;
+    let detail_text = `<br>${details}`;
+    let location_text = `<br>📍 ${location}`
+    let date_text = (date == "") ? "" : `<br>📅 ${date}`;
+    return `${name_text}${detail_text}${location_text}${date_text}`
 }
 
 async function getUsers(password) {
@@ -45,10 +66,19 @@ async function getUsers(password) {
                 console.log(user, location.coords)
                 let [lat, lon] = location.coords.split(',');
                 markers.addLayer(
-                    L.marker([lat, lon]).bindPopup(buildPopup(user.name, location.name, user.phone, data.auth_level))//.addTo(map);
+                    L.marker([lat, lon]).bindPopup(buildUserPopup(user.name, location.name, user.phone, data.auth_level))
                 );
             })
         });
+        data.trips.forEach(trip => {
+            trip.locations.forEach(location => {
+                console.log(trip, location.coords)
+                let [lat, lon] = location.coords.split(',');
+                let marker = L.marker([lat, lon]).bindPopup(buildTripPopup(trip.name, trip.details, location.name, trip.date, data.auth_level))
+                marker._icon.style.filter = "hue-rotate(120deg)"
+                markers.addLayer(marker);
+            })
+        });        
         map.addLayer(markers);
         return data.auth_level;
     } catch (error) {

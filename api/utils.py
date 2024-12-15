@@ -104,6 +104,37 @@ def get_users_from_records(
         for record in records  # if record["wa"] == "TRUE" #and int(record["map1"]) != -1 and int(record["map2"])) != -1
     ]
 
+def get_trips_from_records(
+    records: List[Dict],
+    locations: List[Dict],
+    auth_level: AUTH_LEVEL = AUTH_LEVEL.PUBLIC,
+) -> List[Dict]:
+    """Get clean list of users from records from Google Sheets.
+
+    :param List[Dict] records: records from main sheet containing all user info
+    :param List[Dict] locations: records from location sheet containing user location info
+    :param AUTH_LEVEL auth_level: auth level for how much info to return, defaults to AUTH_LEVEL.PUBLIC
+    :return List[Dict]: list of users where each user is a dict with keys "name", "locations", "phone"
+    """
+    location_dict = defaultdict(
+        lambda: DEFAULT_LOCATION, {loc["location"]: loc["latlon"] for loc in locations}
+    )
+
+    print(records)
+
+    return [
+        {
+            "name": record.get("trip_name", ""),
+            "details": record.get("details", ""),
+            "locations": [
+                {"name": location.title(), "coords": location_dict[location]}
+                for location in [record[os.getenv("LOCATION_PROMPT")]]
+            ],
+            "date": str(record.get("date", "")),
+        }
+        for record in records
+    ]
+
 
 def split_location_text(location_text: str, sep: str = "/") -> List[str]:
     """Split and clean location text into list of clean locations to be matched and/or geocoded.
