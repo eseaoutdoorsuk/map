@@ -6,9 +6,9 @@ body, html {
 }
 
 #map {
-height: 100vh;
-width: 100%;
-z-index: 100;
+    height: 100vh;
+    width: 100%;
+    z-index: 100;
 }
 
 .logo {
@@ -23,24 +23,16 @@ z-index: 100;
     z-index: 1000;
     top: 50%;
     left: 0px;
- }
+}
 
 .spinner {
     position: fixed;
     z-index: 1031;
     top: 50%;
     right: 50%;
-  }
-
-.nav-item.dropdown:hover .dropdown-menu {
-    display: block;
-    margin-top: 0;
 }
 
-.custom-header-bg {
-    background-color: #EDE7D9 !important;
-}
-
+/* LEGEND */
 .legend {
     background: white;
     padding: 10px;
@@ -51,17 +43,14 @@ z-index: 100;
     top: 10px;
     right: 10px;
 }
-
 .legend label {
     display: flex;
     align-items: center;
     cursor: pointer;
 }
-
 .legend input {
     margin-right: 5px;
 }
-
 .legend i {
     display: inline-block;
     width: 25px;
@@ -75,14 +64,11 @@ z-index: 100;
   height: 41px;
   margin-right: 10px;
 }
-
 .legend .icon-users {
     background: url('https://unpkg.com/leaflet/dist/images/marker-icon.png') no-repeat center center;
     background-size: contain;
-
-  }
-  .legend .icon-trips {
+}
+.legend .icon-trips {
     background: url('https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png') no-repeat center center; /* Example other icon */
     background-size: contain;
-
-  }
+}
