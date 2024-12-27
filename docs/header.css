@@ -1,3 +1,5 @@
+/* Taken directly from https://github.com/eseaoutdoorsuk/eseaoutdoorsuk.github.io/blob/main/_sass/_header.scss*/
+
 .nav-item.dropdown:hover .dropdown-menu {
     display: block;
     margin-top: 0;
