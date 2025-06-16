@@ -94,18 +94,22 @@ async function getUsers(password) {
         data.users.forEach(user => {
             if (user.active) {
                 user.locations.forEach(location => {
-                    let [lat, lon] = location.coords.split(',');
-                    markers.addLayer(
-                        L.marker([lat, lon]).bindPopup(buildUserPopup(user.name, location.name, user.phone, data.auth_level))
-                    );
+                    if (typeof location.coords === 'string' && location.coords.includes(',')) {
+                        let [lat, lon] = location.coords.split(',');
+                        markers.addLayer(
+                            L.marker([lat, lon]).bindPopup(buildUserPopup(user.name, location.name, user.phone, data.auth_level))
+                        );
+                    }
                 })
             }
         });
         data.trips.forEach(trip => {
             trip.locations.forEach(location => {
-                let [lat, lon] = location.coords.split(',');
-                let marker = L.marker([lat, lon], {icon: goldIcon}).bindPopup(buildTripPopup(trip.name, trip.details, location.name, trip.date, data.auth_level))
-                markers2.addLayer(marker);
+                if (typeof location.coords === 'string' && location.coords.includes(',')) {
+                    let [lat, lon] = location.coords.split(',');
+                    let marker = L.marker([lat, lon], {icon: goldIcon}).bindPopup(buildTripPopup(trip.name, trip.details, location.name, trip.date, data.auth_level))
+                    markers2.addLayer(marker);
+                }
             })
         });        
         map.addLayer(markers);
