@@ -55,7 +55,7 @@ function buildUserPopup(name, location, phone, auth_level) {
     let location_text = `<br>📍 ${location}`
     let phone_text = (phone == "") ? "" : `<br>📞 ${phone}`;
     let show_more_text = (auth_level === "PUBLIC" || auth_level === "DENIED") ? '<br><button onclick="displayAuth()">Show more...</button>' : '';
-    return `${name_text}${location_text}${phone_text}<br>In Heylo community${show_more_text}`
+    return `${name_text}${location_text}${phone_text}<br>👥 In Heylo community<br>📅 Active less than 3 months ago<br>🟡 <strong>Contact admins for more info</strong>` //${show_more_text}
 }
 
 function buildTripPopup(name, details, location, date, auth_level) {
@@ -93,10 +93,12 @@ async function getUsers(password) {
         const data = await response.json();
         data.users.forEach(user => {
             user.locations.forEach(location => {
-                let [lat, lon] = location.coords.split(',');
-                markers.addLayer(
-                    L.marker([lat, lon]).bindPopup(buildUserPopup(user.name, location.name, user.phone, data.auth_level))
-                );
+                if (location.active) {
+                    let [lat, lon] = location.coords.split(',');
+                    markers.addLayer(
+                        L.marker([lat, lon]).bindPopup(buildUserPopup(user.name, location.name, user.phone, data.auth_level))
+                    );
+                }
             })
         });
         data.trips.forEach(trip => {

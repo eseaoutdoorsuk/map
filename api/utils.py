@@ -100,6 +100,10 @@ def get_users_from_records(
                 filter1=0,
                 filter2=3,
             ),  # filter1=int(record["map1"]), filter2=int(record["map2"])),
+            "active": redact_active(
+                record.get("hidden", ""),
+                auth_level=auth_level
+            ),
         }
         for record in records  # if record["wa"] == "TRUE" #and int(record["map1"]) != -1 and int(record["map2"])) != -1
     ]
@@ -159,6 +163,9 @@ def split_location_text(location_text: str, sep: str = "/") -> List[str]:
         print(locations)
     return [location for location in locations if location]
 
+
+def redact_active(active: str, auth_level: AUTH_LEVEL = AUTH_LEVEL.PUBLIC) -> bool:
+    return active == ""
 
 def redact_phone(
     phone: str,
