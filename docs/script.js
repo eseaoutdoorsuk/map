@@ -92,14 +92,14 @@ async function getUsers(password) {
         }
         const data = await response.json();
         data.users.forEach(user => {
-            user.locations.forEach(location => {
-                if (location.active) {
+            if (user.active) {
+                user.locations.forEach(location => {
                     let [lat, lon] = location.coords.split(',');
                     markers.addLayer(
                         L.marker([lat, lon]).bindPopup(buildUserPopup(user.name, location.name, user.phone, data.auth_level))
                     );
-                }
-            })
+                })
+            }
         });
         data.trips.forEach(trip => {
             trip.locations.forEach(location => {
